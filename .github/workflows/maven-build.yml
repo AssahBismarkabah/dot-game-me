@@ -1,0 +1,30 @@
+name: Build Maven Project
+
+on:
+  push:
+    branches:
+      - master  # Trigger on pushes to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: 'gradle'
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Upload JAR file
+        uses: actions/upload-artifact@v2
+        with:
+          name: dot-game-jar
+          path: target/dot-game-1.0-SNAPSHOT.jar
